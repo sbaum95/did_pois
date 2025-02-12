@@ -191,7 +191,7 @@ att_gt <- function(yname,
                    cores=1) {
 
   # Check if user wants to run faster mode:
-  if (faster_mode) {
+  #if (faster_mode) {
     # this is a DIDparams2 object
     dp <- pre_process_did2(yname=yname,
                             tname=tname,
@@ -223,60 +223,60 @@ att_gt <- function(yname,
     #-----------------------------------------------------------------------------
     results <- compute.att_gt2(dp)
 
-  } else {
-    # this is a DIDparams object
-    dp <- pre_process_did(yname=yname,
-                          tname=tname,
-                          idname=idname,
-                          gname=gname,
-                          xformla=xformla,
-                          data=data,
-                          panel=panel,
-                          allow_unbalanced_panel=allow_unbalanced_panel,
-                          control_group=control_group,
-                          anticipation=anticipation,
-                          weightsname=weightsname,
-                          alp=alp,
-                          bstrap=bstrap,
-                          cband=cband,
-                          biters=biters,
-                          clustervars=clustervars,
-                          est_method=est_method,
-                          base_period=base_period,
-                          print_details=print_details,
-                          pl=pl,
-                          cores=cores,
-                          call=match.call()
-    )
+  # } else {
+  #   # this is a DIDparams object
+  #   dp <- pre_process_did(yname=yname,
+  #                         tname=tname,
+  #                         idname=idname,
+  #                         gname=gname,
+  #                         xformla=xformla,
+  #                         data=data,
+  #                         panel=panel,
+  #                         allow_unbalanced_panel=allow_unbalanced_panel,
+  #                         control_group=control_group,
+  #                         anticipation=anticipation,
+  #                         weightsname=weightsname,
+  #                         alp=alp,
+  #                         bstrap=bstrap,
+  #                         cband=cband,
+  #                         biters=biters,
+  #                         clustervars=clustervars,
+  #                         est_method=est_method,
+  #                         base_period=base_period,
+  #                         print_details=print_details,
+  #                         pl=pl,
+  #                         cores=cores,
+  #                         call=match.call()
+  #   )
 
-    #-----------------------------------------------------------------------------
-    # Compute all ATT(g,t)
-    #-----------------------------------------------------------------------------
-    results <- compute.att_gt(dp)
-  }
-
-  # extract ATT(g,t) and influence functions
+ #    #-----------------------------------------------------------------------------
+ #    # Compute all ATT(g,t)
+ #    #-----------------------------------------------------------------------------
+ #    # results <- compute.att_gt(dp)
+ # # }
+ #
+ #  # extract ATT(g,t) and influence functions
   attgt.list <- results$attgt.list
   inffunc <- results$inffunc
-
-  # process results
-  # attgt.results <- process_attgt(attgt.list)
-  tryCatch(
-    {
-      # Attempt to run this line for process results
-      attgt.results <- process_attgt(attgt.list)
-    },
-    error = function(e) {
-      # Handle the error
-      if (faster_mode) {
-        # If faster_mode is TRUE, send this stop message
-        stop("An unexpected error occurred, normally associated with a singular matrix due to not enough control units. Try changing faster_mode=FALSE.")
-      } else {
-        # If faster_mode is FALSE, send this stop message
-        stop("An unexpected error occurred, normally associated with a singular matrix due to not enough control units.")
-      }
-    }
-  )
+ #
+ #  # process results
+attgt.results <- process_attgt(attgt.list)
+ #  # tryCatch(
+ #  #   {
+ #  #     # Attempt to run this line for process results
+ #  #     attgt.results <- process_attgt(attgt.list)
+ #  #   },
+ #  #   error = function(e) {
+ #  #     # Handle the error
+ #  #     if (faster_mode) {
+ #  #       # If faster_mode is TRUE, send this stop message
+ #  #       stop("An unexpected error occurred, normally associated with a singular matrix due to not enough control units. Try changing faster_mode=FALSE.")
+ #  #     } else {
+ #  #       # If faster_mode is FALSE, send this stop message
+ #  #       stop("An unexpected error occurred, normally associated with a singular matrix due to not enough control units.")
+ #  #     }
+ #  #   }
+ #  # )
   group <- attgt.results$group
   att <- attgt.results$att
   tt <- attgt.results$tt
@@ -395,5 +395,5 @@ att_gt <- function(yname,
 
   # Return this list
   return(MP(group=group, t=tt, att=att, V_analytical=V, se=se, c=cval, inffunc=inffunc, n=n, W=W, Wpval=Wpval, alp = alp, DIDparams=dp))
-
+#return(results)
 }
